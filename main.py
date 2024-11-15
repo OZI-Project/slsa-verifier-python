@@ -10,8 +10,8 @@ from cryptography.hazmat.primitives.asymmetric import ec
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-a", "--artifact", help="Local path of binary to verify", default="artifacts/binary-linux-amd64", action="store")
-    parser.add_argument("-p", "--provenance", help="Local path of binary provenance", default="artifacts/binary-linux-amd64.intoto.jsonl", action="store")
+    parser.add_argument("-a", "--artifact", help="Local path of binary to verify", default=None, action="store")
+    parser.add_argument("-p", "--provenance", help="Local path of binary provenance", default=None, action="store")
     parser.add_argument("-u", "--source-repo", help="Github source code repo", default=None, action="store")
     parser.add_argument("-t", "--source-tag", help="Tag used to create artifact", default=None, action="store")
     parser.add_argument("-b", "--source-trigger", help="Tag used to create artifact", default=None, action="store")
@@ -25,10 +25,10 @@ def main():
     source_trigger = args.source_trigger
     source_digest = args.source_digest
 
-    with open("artifacts/binary-linux-amd64", "rb") as f:
+    with open(artifact, "rb") as f:
         artifact = f.read()
 
-    with open("artifacts/binary-linux-amd64.intoto.jsonl", "r") as f:
+    with open(provenance, "r") as f:
         provenance_bytes = f.read()
 
     provenance = json.loads(provenance_bytes)

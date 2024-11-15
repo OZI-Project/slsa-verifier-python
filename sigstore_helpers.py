@@ -1,6 +1,5 @@
 import json, requests
 
-from sigstore._internal.tuf import TrustUpdater
 from sigstore._internal.rekor.client import RekorClient
 from sigstore._internal.fulcio import FulcioClient
 
@@ -31,7 +30,6 @@ def search(email=None, pubkey=None, hash=None):
     return requests.post(f"{REKOR_URL}/api/v1/index/retrieve", data=payload,  headers=REKOR_API_HEADERS)
 
 def get_rekor_client():
-    updater = TrustUpdater.production()
     return RekorClient.production(updater)
 
 def get_fulcio_client():

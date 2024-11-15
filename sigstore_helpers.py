@@ -1,14 +1,13 @@
-import json, requests
+import json
 
-from sigstore._internal.rekor.client import RekorClient
+import requests
 from sigstore._internal.fulcio import FulcioClient
+from sigstore._internal.rekor.client import RekorClient
 
 REKOR_URL = "https://rekor.sigstore.dev"
 
-REKOR_API_HEADERS = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-}
+REKOR_API_HEADERS = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+
 
 def search(email=None, pubkey=None, hash=None):
     if pubkey is not None:
@@ -27,10 +26,14 @@ def search(email=None, pubkey=None, hash=None):
     }
     payload = json.dumps(rekor_payload_search)
 
-    return requests.post(f"{REKOR_URL}/api/v1/index/retrieve", data=payload,  headers=REKOR_API_HEADERS)
+    return requests.post(
+        f"{REKOR_URL}/api/v1/index/retrieve", data=payload, headers=REKOR_API_HEADERS
+    )
+
 
 def get_rekor_client():
-    return RekorClient.production(updater)
+    return RekorClient.production()
+
 
 def get_fulcio_client():
     return FulcioClient.production()

@@ -41,10 +41,17 @@ PAE:
 b'DSSEv1 29 http://example.com/HelloWorld 11 hello world'
 """
 
-import base64, binascii, dataclasses, json, struct
-
+import base64
+import binascii
+import dataclasses
+import json
+import struct
 # Protocol requires Python 3.8+.
-from typing import Iterable, List, Optional, Protocol, Tuple
+from typing import Iterable
+from typing import List
+from typing import Optional
+from typing import Protocol
+from typing import Tuple
 
 
 class Signer(Protocol):
@@ -92,8 +99,11 @@ def b64dec(m: str) -> bytes:
 
 def PAE(payloadType: str, payload: bytes) -> bytes:
     return b'DSSEv1 %d %b %d %b' % (
-            len(payloadType), payloadType.encode('utf-8'),
-            len(payload), payload)
+        len(payloadType),
+        payloadType.encode('utf-8'),
+        len(payload),
+        payload,
+    )
 
 
 def Sign(payloadType: str, payload: bytes, signer: Signer) -> str:
@@ -103,11 +113,13 @@ def Sign(payloadType: str, payload: bytes, signer: Signer) -> str:
     }
     if not signature['keyid']:
         del signature['keyid']
-    return json.dumps({
-        'payload': b64enc(payload),
-        'payloadType': payloadType,
-        'signatures': [signature],
-    })
+    return json.dumps(
+        {
+            'payload': b64enc(payload),
+            'payloadType': payloadType,
+            'signatures': [signature],
+        }
+    )
 
 
 def Verify(json_signature: str, verifiers: VerifierList) -> VerifiedPayload:
@@ -127,4 +139,5 @@ def Verify(json_signature: str, verifiers: VerifierList) -> VerifiedPayload:
 
 if __name__ == '__main__':
     import doctest
+
     doctest.testmod()
